@@ -95,14 +95,14 @@ function setLayerTwo() {
             // Draw the animation
             that.context.drawImage(
                 that.image,
-                frameIndex * that.width / numberOfFrames,//Where to start clipping on X coordinate line
+                frameIndex * that.width / numberOfFrames, //Where to start clipping on X coordinate line
                 0, //Where to start clipping on Y coordinate line
-                that.width / numberOfFrames,
-                that.height,
-                0,
-                0,
-                that.width / numberOfFrames,
-                that.height);
+                that.width / numberOfFrames, // Width of the clipped image
+                that.height, // Height of the clipped image
+                that.x, //Coordinates X
+                that.y, //Coordinates Y
+                that.width / numberOfFrames * that.scaleRatio, // Image width
+                that.height * that.scaleRatio); // Image height
         };
         //Image length division by the number of frames on the image
         that.getFrameWidth = function () {
