@@ -25,18 +25,31 @@ function setLayerOne() {
 
 function setLayerTwo() {
     var canvas = document.getElementById("sprite"),
-        spriteImage = new Image(),
-        spriteObj;
+        spritesNum = 4,
+        spriteStorage = [];
 
-    spriteObj = sprite({
-        context: canvas.getContext("2d"),
-        width: 1000,
-        height: 100,
-        image: spriteImage,
-        numberOfFrames: 10,
-        ticksPerFrame: 4
-    });
+    function createSprite() {
+        var spriteIndex,
+            spriteImage;
 
+        spriteIndex = spriteStorage.length;
+        spriteImage = new Image();
+        spriteImage.src = "sprite/coin-sprite-animation.png";
+        spriteStorage[spriteIndex] = sprite({
+            context: canvas.getContext("2d"),
+            width: 1000,
+            height: 100,
+            image: spriteImage,
+            numberOfFrames: 10,
+            ticksPerFrame: i
+        });
+
+        // Set X,Y position of the currrent indexed coin object
+        spriteStorage[spriteIndex].x = Math.random() * (canvas.width - spriteStorage[spriteIndex].getFrameWidth() * spriteStorage[spriteIndex].scaleRatio);
+        spriteStorage[spriteIndex].y = Math.random() * (canvas.height - spriteStorage[spriteIndex].height * spriteStorage[spriteIndex].scaleRatio);
+        // Set the scale ratio of the coin randomly
+        spriteStorage[spriteIndex].scaleRatio = Math.random() * 0.5 + 0.5;
+    }
 
     function sprite(options) {
 
@@ -88,20 +101,31 @@ function setLayerTwo() {
                 that.width / numberOfFrames,
                 that.height);
         };
+        //Image length division by the number of frames on the image
+        that.getFrameWidth = function () {
+            return that.width / numberOfFrames;
+        };
 
         return that;
     }
 
-    function gameLoop () {
-
+    function gameLoop() {
+        var i;
         window.requestAnimationFrame(gameLoop);
-
-        spriteObj.update();
-        spriteObj.render();
+        for (i = 0; i < spriteStorage.length; i += 1) {
+            spriteStorage[i].update();
+            spriteStorage[i].render();
+        }
     }
 
-    spriteImage.addEventListener("load", gameLoop);
-    spriteImage.src = "sprite/coin-sprite-animation.png";
+    //spriteImage.addEventListener("load", gameLoop);
+
+
+    for (i = 0; i < spritesNum; i += 1) {
+        createSprite();
+    }
+    console.log(spriteStorage);
+    gameLoop();
 }
 
 function setLayerThree() {
