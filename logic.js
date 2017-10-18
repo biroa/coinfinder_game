@@ -28,6 +28,9 @@ function setLayerTwo() {
         spritesNum = 4,
         spriteStorage = [];
 
+    /**
+     * Instantiate the sprite and store in the array
+     */
     function createSprite() {
         var spriteIndex,
             spriteImage;
@@ -51,6 +54,11 @@ function setLayerTwo() {
         spriteStorage[spriteIndex].scaleRatio = Math.random() * 0.5 + 0.5;
     }
 
+    /**
+     *
+     * @param options
+     * @return {{}}
+     */
     function sprite(options) {
 
         //Init scope
