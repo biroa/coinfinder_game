@@ -63,7 +63,10 @@ function setLayerTwo() {
         that.context = options.context;
         that.width = options.width;
         that.height = options.height;
+        that.x = 1;
+        that.y = 1;
         that.image = options.image;
+        that.scaleRatio = 1;
 
         //Sprite update itself
         that.update = function () {
