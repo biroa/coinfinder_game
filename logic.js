@@ -25,7 +25,7 @@ function setLayerOne() {
 
 function setLayerTwo() {
     var canvas = document.getElementById("sprite"),
-        spritesNum = 4,
+        spritesNum = 10,
         spriteStorage = [];
 
     /**
@@ -37,21 +37,26 @@ function setLayerTwo() {
 
         spriteIndex = spriteStorage.length;
         spriteImage = new Image();
-        spriteImage.src = "sprite/coin-sprite-animation.png";
         spriteStorage[spriteIndex] = sprite({
             context: canvas.getContext("2d"),
             width: 1000,
             height: 100,
             image: spriteImage,
             numberOfFrames: 10,
-            ticksPerFrame: i
+            ticksPerFrame: i,
+            angle: (2 * Math.PI) * Math.random(),
+            velocity: (10 * Math.random()) - 5
         });
 
         // Set X,Y position of the currrent indexed coin object
-        spriteStorage[spriteIndex].x = Math.random() * (canvas.width - spriteStorage[spriteIndex].getFrameWidth() * spriteStorage[spriteIndex].scaleRatio);
-        spriteStorage[spriteIndex].y = Math.random() * (canvas.height - spriteStorage[spriteIndex].height * spriteStorage[spriteIndex].scaleRatio);
         // Set the scale ratio of the coin randomly
         spriteStorage[spriteIndex].scaleRatio = Math.random() * 0.5 + 0.5;
+
+        console.log(canvas.width,spriteStorage[spriteIndex].getFrameWidth(), spriteStorage[spriteIndex].scaleRatio);
+        spriteStorage[spriteIndex].x = Math.random() * (canvas.width - spriteStorage[spriteIndex].getFrameWidth() * spriteStorage[spriteIndex].scaleRatio);
+        spriteStorage[spriteIndex].y = Math.random() * (canvas.height - spriteStorage[spriteIndex].height * spriteStorage[spriteIndex].scaleRatio);
+
+        spriteImage.src = "sprite/coin-sprite-animation.png";
     }
 
     /**
@@ -66,17 +71,22 @@ function setLayerTwo() {
             frameIndex = 0,
             tickCount = 0,
             ticksPerFrame = options.ticksPerFrame || 0,
-            numberOfFrames = options.numberOfFrames || 1;
+            numberOfFrames = options.numberOfFrames || 1,
+            angle = options.angle,
+            velocity = options.velocity;
+
 
         that.context = options.context;
         that.width = options.width;
         that.height = options.height;
-        that.x = 1;
-        that.y = 1;
+        that.x = 0;
+        that.y = 0;
         that.image = options.image;
         that.scaleRatio = 1;
+        that.angle = options.angle;
+        that.velocity = velocity;
 
-        //Sprite update itself
+                //Sprite update itself
         that.update = function () {
 
             tickCount += 1;
@@ -97,9 +107,6 @@ function setLayerTwo() {
         //Sprite render itself
         that.render = function () {
 
-            // Clear the canvas
-            that.context.clearRect(0, 0, that.width, that.height);
-
             // Draw the animation
             that.context.drawImage(
                 that.image,
@@ -117,15 +124,55 @@ function setLayerTwo() {
             return that.width / numberOfFrames;
         };
 
+        that.move = function() {
+            // add horizontal increment to the x pos
+            // add vertical increment to the y pos
+
+            // v    = //floatNum: 0.1-6.9
+            //angle = floatNum: -4.0-4.9
+            that.x += that.velocity * Math.cos(that.angle);
+            that.y -= that.velocity * Math.sin(that.angle);
+        };
+
         return that;
     }
 
+    function testCollisionWithWalls(obj) {
+        var spriteRadius = 100;
+        // left
+        if (obj.x < -spriteRadius) {
+            obj.x = -spriteRadius;
+            obj.angle = -obj.angle + Math.PI;
+        }
+        // right
+        if (obj.x > canvas.width + spriteRadius) {
+            obj.x = canvas.width + spriteRadius;
+            obj.angle = -obj.angle + Math.PI;
+        }
+        // up
+        if (obj.y < -spriteRadius) {
+            obj.y = -spriteRadius;
+            obj.angle = -obj.angle;
+        }
+        // down
+        if (obj.y > canvas.height + spriteRadius) {
+            obj.y = canvas.height - spriteRadius;
+            obj.angle =-obj.angle;
+        }
+    }
+    
     function gameLoop() {
         var i;
         window.requestAnimationFrame(gameLoop);
+
+        // Clear the canvas
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+
         for (i = 0; i < spriteStorage.length; i += 1) {
             spriteStorage[i].update();
             spriteStorage[i].render();
+            spriteStorage[i].move();
+            testCollisionWithWalls(spriteStorage[i]);
         }
     }
 
@@ -135,7 +182,7 @@ function setLayerTwo() {
     for (i = 0; i < spritesNum; i += 1) {
         createSprite();
     }
-    console.log(spriteStorage);
+        console.log(spriteStorage);
     gameLoop();
 }
 
