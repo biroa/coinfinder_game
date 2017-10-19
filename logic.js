@@ -31,7 +31,8 @@ function setLayerTwo() {
         score = 0;
 
     /**
-     * Instantiate the sprite and store in the array
+     * @description Instantiate the sprite and store in the array
+     * @return undefined
      */
     function createSprite() {
         var spriteIndex,
@@ -50,11 +51,9 @@ function setLayerTwo() {
             velocity: (10 * Math.random()) - 5
         });
 
-        // Set X,Y position of the currrent indexed coin object
-        // Set the scale ratio of the coin randomly
+        // Set X,Y position of the current indexed sprite object
+        // Set the scale ratio of the sprite randomly
         spriteStorage[spriteIndex].scaleRatio = Math.random() * 0.5 + 0.5;
-
-        console.log(canvas.width,spriteStorage[spriteIndex].getFrameWidth(), spriteStorage[spriteIndex].scaleRatio);
         spriteStorage[spriteIndex].x = Math.random() * (canvas.width - spriteStorage[spriteIndex].getFrameWidth() * spriteStorage[spriteIndex].scaleRatio);
         spriteStorage[spriteIndex].y = Math.random() * (canvas.height - spriteStorage[spriteIndex].height * spriteStorage[spriteIndex].scaleRatio);
 
@@ -62,9 +61,9 @@ function setLayerTwo() {
     }
 
     /**
-     *
+     * @description Create the sprite
      * @param options
-     * @return {{}}
+     * @return {Object} that
      */
     function sprite(options) {
 
@@ -88,7 +87,10 @@ function setLayerTwo() {
         that.angle = options.angle;
         that.velocity = velocity;
 
-        //Sprite update itself
+        /**
+         * @description Sprite update itself
+         * @return undefined
+         */
         that.update = function () {
 
             tickCount += 1;
@@ -106,7 +108,10 @@ function setLayerTwo() {
                 }
             }
         };
-        //Sprite render itself
+        /**
+         * @description Sprite render itself
+         * @return undefined
+         */
         that.render = function () {
 
             // Draw the animation
@@ -121,16 +126,22 @@ function setLayerTwo() {
                 that.width / numberOfFrames * that.scaleRatio, // Image width
                 that.height * that.scaleRatio); // Image height
         };
-        //Image length division by the number of frames on the image
+        /**
+         * @description Image length division by the number of frames on the image
+         * @return {number}
+         */
         that.getFrameWidth = function () {
             return that.width / numberOfFrames;
         };
-
-        that.move = function() {
+        /**
+         * @description Move the coins
+         * @return undefined
+         */
+        that.move = function () {
             // add horizontal increment to the x pos
             // add vertical increment to the y pos
 
-            // v    = //floatNum: 0.1-6.9
+            // velocity    = //floatNum: 0.1-6.9
             //angle = floatNum: -4.0-4.9
             that.x += that.velocity * Math.cos(that.angle);
             that.y -= that.velocity * Math.sin(that.angle);
@@ -140,7 +151,7 @@ function setLayerTwo() {
     }
 
     /**
-     * @description
+     * @description Check collision with walls. Walls are beyond the edges of the image .
      * @param {object} obj
      */
     function testCollisionWithWalls(obj) {
@@ -168,7 +179,7 @@ function setLayerTwo() {
     }
 
     /**
-     *
+     * @description return the canvas position calculating in the offset
      * @param element
      * @return {{x: (Number|number), y: (Number|number)}}
      */
@@ -189,7 +200,11 @@ function setLayerTwo() {
         return pos;
     }
 
-    //Destroy Sprite
+    /**
+     * @description We destroy the clicked sprite.
+     * @param sprite
+     * @return undefined
+     */
     function destroySprite (sprite) {
 
         var i;
@@ -205,7 +220,7 @@ function setLayerTwo() {
 
 
     /**
-     *
+     * @description Return the distance between the coordinates based on distance formula
      * @param {float} p1
      * @param {float} p2
      * @return {number}
@@ -220,8 +235,9 @@ function setLayerTwo() {
 
 
     /**
-     * Click or Touch a sprite on the stage
+     * @description Click or Touch a sprite on the stage
      * @param {event} e
+     * @return undefined
      */
     function tap(e) {
 
@@ -270,7 +286,10 @@ function setLayerTwo() {
         }
 
 
-
+    /**
+     * @description basic game loop
+     * @return undefined
+     */
     function gameLoop() {
         var i;
         window.requestAnimationFrame(gameLoop);
@@ -297,14 +316,11 @@ function setLayerTwo() {
 function setLayerThree() {
     var ctx,
         layer3,
-        layer4
-        width = 1200,
-        height = 478,
         radius = 60;
     layer3 = document.querySelector("#light");
     ctx = layer3.getContext("2d");
-    document.onmousemove = mouseMove;
-    document.onmousedown = mouseOut;
+    layer3.addEventListener("mousemove", mouseMove);
+    layer3.addEventListener("mouseout", mouseOut);
 
     /**
      * @param mouseX
