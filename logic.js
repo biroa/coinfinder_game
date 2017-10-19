@@ -320,7 +320,7 @@ function setLayerThree() {
     layer3 = document.querySelector("#light");
     ctx = layer3.getContext("2d");
     layer3.addEventListener("mousemove", mouseMove);
-    layer3.addEventListener("mouseout", mouseOut);
+    //layer3.addEventListener("mouseout", mouseOut);
 
     /**
      * @param mouseX
@@ -384,7 +384,7 @@ function setLayerFour() {
 
     $(document).mousemove(function(e){
 
-            var angle = Math.atan2(e.pageX - boxCenter[0], -(e.pageY - boxCenter[1])) * (180 / Math.PI);
+        var angle = Math.atan2(e.pageX - boxCenter[0], -(e.pageY - boxCenter[1])) * (180 / Math.PI);
         if (angle <= 90 && angle >= -90) {
             box.css({"-webkit-transform": 'rotate(' + angle + 'deg)'});
             box.css({'-moz-transform': 'rotate(' + angle + 'deg)'});
