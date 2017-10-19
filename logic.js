@@ -264,17 +264,18 @@ function setLayerTwo() {
                 y: loc.y
             });
 
-            // Check for tap collision with coin
+            // Check for tap collision with sprite
             if (dist < spriteStorage[i].getFrameWidth() / 2 * spriteStorage[i].scaleRatio) {
                 spritesToDestroy.push(spriteStorage[i]);
             }
 
         }
 
-        //Destroy tapped coins
+        //Destroy tapped sprites
         for (i = 0; i < spritesToDestroy.length; i += 1) {
-
-            score += parseInt(spritesToDestroy[i].scaleRatio * 10, 10);
+            //Size related points if we need it
+            //score += parseInt(spritesToDestroy[i].scaleRatio * 10, 10);
+            score += 1;
             destroySprite(spritesToDestroy[i]);
             setTimeout(createSprite, 1000);
         }
