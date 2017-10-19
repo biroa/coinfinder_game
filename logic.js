@@ -26,7 +26,7 @@ function setLayerOne() {
 function setLayerTwo() {
     var canvas = document.getElementById("sprite"),
         topCanvas = document.getElementById("light"),
-        spritesNum = 10,
+        spritesNum = 5,
         spriteStorage = [],
         score = 0;
 
@@ -169,6 +169,43 @@ function setLayerTwo() {
 
     /**
      *
+     * @param element
+     * @return {{x: (Number|number), y: (Number|number)}}
+     */
+    function getElementPosition (element) {
+        // retrieve the current position of an element relative to the document
+        var parentOffset,
+            pos = {
+                x: element.offsetLeft,
+                y: element.offsetTop
+            };
+
+        if (element.offsetParent) {
+            // element.offsetParent =  is an object reference to the element in which the current element is offset.
+            parentOffset = getElementPosition(element.offsetParent);
+            pos.x += parentOffset.x;
+            pos.y += parentOffset.y;
+        }
+        return pos;
+    }
+
+    //Destroy Sprite
+    function destroySprite (sprite) {
+
+        var i;
+
+        for (i = 0; i < spriteStorage.length; i += 1) {
+            if (spriteStorage[i] === sprite) {
+                spriteStorage[i] = null;
+                spriteStorage.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+
+    /**
+     *
      * @param {float} p1
      * @param {float} p2
      * @return {number}
@@ -181,6 +218,7 @@ function setLayerTwo() {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+
     /**
      * Click or Touch a sprite on the stage
      * @param {event} e
@@ -190,7 +228,7 @@ function setLayerTwo() {
         var i,
             loc = {},
             dist,
-            coinsToDestroy = [],
+            spritesToDestroy = [],
             pos = getElementPosition(canvas),
             tapX = e.targetTouches ? e.targetTouches[0].pageX : e.pageX,
             tapY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY,
@@ -200,11 +238,38 @@ function setLayerTwo() {
         loc.x = (tapX - pos.x) * canvasScaleRatio;
         loc.y = (tapY - pos.y) * canvasScaleRatio;
 
-        for(i = 0; i < spriteStorage.length; i += 1){
+        for (i = 0; i < spriteStorage.length; i += 1) {
+            // Distance between tap and sprite
+            dist = distance({
+                x: (spriteStorage[i].x + spriteStorage[i].getFrameWidth() / 2 * spriteStorage[i].scaleRatio),
+                y: (spriteStorage[i].y + spriteStorage[i].getFrameWidth() / 2 * spriteStorage[i].scaleRatio)
+            }, {
+                x: loc.x,
+                y: loc.y
+            });
+
+            // Check for tap collision with coin
+            if (dist < spriteStorage[i].getFrameWidth() / 2 * spriteStorage[i].scaleRatio) {
+                spritesToDestroy.push(spriteStorage[i]);
+            }
 
         }
 
-    }
+        //Destroy tapped coins
+        for (i = 0; i < spritesToDestroy.length; i += 1) {
+
+            score += parseInt(spritesToDestroy[i].scaleRatio * 10, 10);
+            destroySprite(spritesToDestroy[i]);
+            setTimeout(createSprite, 1000);
+        }
+
+        if (spritesToDestroy.length) {
+            document.getElementById("score").innerHTML = score;
+        }
+
+        }
+
+
 
     function gameLoop() {
         var i;
@@ -224,7 +289,6 @@ function setLayerTwo() {
     for (i = 0; i < spritesNum; i += 1) {
         createSprite();
     }
-        console.log(spriteStorage);
     gameLoop();
     topCanvas.addEventListener("touchstart", tap);
     topCanvas.addEventListener("mousedown", tap);
