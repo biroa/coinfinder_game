@@ -25,6 +25,7 @@ function setLayerOne() {
 
 function setLayerTwo() {
     var canvas = document.getElementById("sprite"),
+        topCanvas = document.getElementById("light"),
         spritesNum = 10,
         spriteStorage = [];
 
@@ -160,7 +161,14 @@ function setLayerTwo() {
             obj.angle =-obj.angle;
         }
     }
-    
+
+    function tap(e) {
+        var tapX = e.targetTouches ? e.targetTouches[0].pageX : e.pageX,
+            tapY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY;
+
+        console.log(tapX, tapY);
+    }
+
     function gameLoop() {
         var i;
         window.requestAnimationFrame(gameLoop);
@@ -176,14 +184,13 @@ function setLayerTwo() {
         }
     }
 
-    //spriteImage.addEventListener("load", gameLoop);
-
-
     for (i = 0; i < spritesNum; i += 1) {
         createSprite();
     }
         console.log(spriteStorage);
     gameLoop();
+    topCanvas.addEventListener("touchstart", tap);
+    topCanvas.addEventListener("mousedown", tap);
 }
 
 function setLayerThree() {
