@@ -27,7 +27,8 @@ function setLayerTwo() {
     var canvas = document.getElementById("sprite"),
         topCanvas = document.getElementById("light"),
         spritesNum = 10,
-        spriteStorage = [];
+        spriteStorage = [],
+        score = 0;
 
     /**
      * Instantiate the sprite and store in the array
@@ -87,7 +88,7 @@ function setLayerTwo() {
         that.angle = options.angle;
         that.velocity = velocity;
 
-                //Sprite update itself
+        //Sprite update itself
         that.update = function () {
 
             tickCount += 1;
@@ -138,6 +139,10 @@ function setLayerTwo() {
         return that;
     }
 
+    /**
+     * @description
+     * @param {object} obj
+     */
     function testCollisionWithWalls(obj) {
         var spriteRadius = 100;
         // left
@@ -162,11 +167,43 @@ function setLayerTwo() {
         }
     }
 
-    function tap(e) {
-        var tapX = e.targetTouches ? e.targetTouches[0].pageX : e.pageX,
-            tapY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY;
+    /**
+     *
+     * @param {float} p1
+     * @param {float} p2
+     * @return {number}
+     */
+    function distance (p1, p2) {
 
-        console.log(tapX, tapY);
+        var dx = p1.x - p2.x,
+            dy = p1.y - p2.y;
+
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    /**
+     * Click or Touch a sprite on the stage
+     * @param {event} e
+     */
+    function tap(e) {
+
+        var i,
+            loc = {},
+            dist,
+            coinsToDestroy = [],
+            pos = getElementPosition(canvas),
+            tapX = e.targetTouches ? e.targetTouches[0].pageX : e.pageX,
+            tapY = e.targetTouches ? e.targetTouches[0].pageY : e.pageY,
+            // offsetWidth = width + padding + border; (margin not included)
+            canvasScaleRatio = canvas.width / canvas.offsetWidth;
+
+        loc.x = (tapX - pos.x) * canvasScaleRatio;
+        loc.y = (tapY - pos.y) * canvasScaleRatio;
+
+        for(i = 0; i < spriteStorage.length; i += 1){
+
+        }
+
     }
 
     function gameLoop() {
