@@ -26,7 +26,7 @@ function setLayerOne() {
 function setLayerTwo() {
     var canvas = document.getElementById("sprite"),
         topCanvas = document.getElementById("light"),
-        spritesNum = 5,
+        spritesNum = 10,
         spriteStorage = [],
         score = 0;
 
