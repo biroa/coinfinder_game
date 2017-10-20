@@ -402,7 +402,7 @@ function setLayerFour() {
     }
 
     $(document).mousemove(function(e){moveTheTorchByMouse(e)});
-    box1.addEventListener('touchmove', function(e){
+    layer4.addEventListener('touchmove', function(e){
          // reference first touch point for this event
         moveTheTorchByTouch(e.changedTouches[0])
         //var dist = parseInt(touchobj.clientX) - startx
