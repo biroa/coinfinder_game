@@ -402,5 +402,5 @@ function setLayerFour() {
     }
 
     $(document).mousemove(function(e){moveTheTorchByMouse(e)});
-    $(document).touchstart(function(e){moveTheTorchByMouse(e)});
+    $(document).touchmove(function(e){moveTheTorchByMouse(e)});
 }
