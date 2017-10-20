@@ -393,7 +393,7 @@ function setLayerFour() {
     }
 
     function moveTheTorchByTouch(e){
-        var angle = Math.atan2( e.originalEvent.touches[0].pageX - boxCenter[0], -( e.originalEvent.touches[0].pageY - boxCenter[1])) * (180 / Math.PI);
+        var angle = Math.atan2( e.clientX - boxCenter[0], -( e.originalEvent.touches[0].clientY - boxCenter[1])) * (180 / Math.PI);
         if (angle <= 90 && angle >= -90) {
             box.css({"-webkit-transform": 'rotate(' + angle + 'deg)'});
             box.css({'-moz-transform': 'rotate(' + angle + 'deg)'});
@@ -402,5 +402,10 @@ function setLayerFour() {
     }
 
     $(document).mousemove(function(e){moveTheTorchByMouse(e)});
-    $(document).touchmove(function(e){moveTheTorchByMouse(e)});
+    box1.addEventListener('touchmove', function(e){
+         // reference first touch point for this event
+        moveTheTorchByTouch(e.changedTouches[0])
+        //var dist = parseInt(touchobj.clientX) - startx
+        e.preventDefault()
+    }, false)
 }
