@@ -391,28 +391,7 @@ function setLayerFour() {
             box.css({'transform': 'rotate(' + angle + 'deg)'});
         }
     }
-    function start() {
-        blockMenuHeaderScroll = true;
-    }
-
-    function moveTheTorchByTouch(e){
-
-        var angle = Math.atan2( e.touches[0].pageX - boxCenter[0], -( e.touches[0].pageX - boxCenter[1])) * (180 / Math.PI);        if (angle <= 90 && angle >= -90) {
-            console.log(angle);
-            box.css({"-webkit-transform": 'rotate(' + angle + 'deg)'});
-            box.css({'-moz-transform': 'rotate(' + angle + 'deg)'});
-            box.css({'transform': 'rotate(' + angle + 'deg)'});
-        }
-    }
-
-    function stop() {
-        blockMenuHeaderScroll = false;
-    }
-
+    
     // listen any touch event
-    document.addEventListener('touchstart', start, true);
-    document.addEventListener('touchmove', moveTheTorchByTouch, true);
-    document.addEventListener('touchend', stop, true);
-    document.addEventListener('touchcancel', stop, true);
     document.addEventListener('mousemove', moveTheTorchByMouse, true);
 }
