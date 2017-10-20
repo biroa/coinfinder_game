@@ -383,14 +383,24 @@ function setLayerFour() {
     box.off('click');
     var boxCenter=[box.offset().left+box.width()/2, box.offset().top+box.height()/2];
 
-    $(document).mousemove(function(e){
-
+    function moveTheTorchByMouse(e){
         var angle = Math.atan2(e.pageX - boxCenter[0], -(e.pageY - boxCenter[1])) * (180 / Math.PI);
         if (angle <= 90 && angle >= -90) {
             box.css({"-webkit-transform": 'rotate(' + angle + 'deg)'});
             box.css({'-moz-transform': 'rotate(' + angle + 'deg)'});
             box.css({'transform': 'rotate(' + angle + 'deg)'});
         }
+    }
 
-    });
+    function moveTheTorchByTouch(e){
+        var angle = Math.atan2( e.originalEvent.touches[0].pageX - boxCenter[0], -( e.originalEvent.touches[0].pageY - boxCenter[1])) * (180 / Math.PI);
+        if (angle <= 90 && angle >= -90) {
+            box.css({"-webkit-transform": 'rotate(' + angle + 'deg)'});
+            box.css({'-moz-transform': 'rotate(' + angle + 'deg)'});
+            box.css({'transform': 'rotate(' + angle + 'deg)'});
+        }
+    }
+
+    $(document).mousemove(function(e){moveTheTorchByMouse(e)});
+    $(document).touchstart(function(e){moveTheTorchByMouse(e)});
 }
