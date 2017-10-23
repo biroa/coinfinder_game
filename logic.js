@@ -233,6 +233,9 @@ function setLayerTwo() {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    // function doSomething(score) {
+    //     console.log('Current Score:' + score);
+    // }
 
     /**
      * @description Click or Touch a sprite on the stage
@@ -240,7 +243,6 @@ function setLayerTwo() {
      * @return undefined
      */
     function tap(e) {
-
         var i,
             loc = {},
             dist,
@@ -278,6 +280,9 @@ function setLayerTwo() {
             score += 1;
             destroySprite(spritesToDestroy[i]);
             setTimeout(createSprite, 1000);
+            //call a function to do something
+            //doSomething(score);
+
         }
 
         if (spritesToDestroy.length) {
@@ -321,7 +326,7 @@ function setLayerThree() {
     layer3 = document.querySelector("#light");
     ctx = layer3.getContext("2d");
     layer3.addEventListener("mousemove", mouseMove);
-    //layer3.addEventListener("mouseout", mouseOut);
+    layer3.addEventListener("touchmove", handleMove, true);
 
     /**
      * @param mouseX
@@ -357,6 +362,10 @@ function setLayerThree() {
         drawCircle(e.clientX, e.clientY);
     }
 
+    function handleMove(e) {
+        drawCircle(e.changedTouches[0].pageX, e.changedTouches[0].pageY);
+    }
+
     /**
      *
      * @param e
@@ -383,15 +392,41 @@ function setLayerFour() {
     box.off('click');
     var boxCenter=[box.offset().left+box.width()/2, box.offset().top+box.height()/2];
 
-    function moveTheTorchByMouse(e){
-        var angle = Math.atan2(e.pageX - boxCenter[0], -(e.pageY - boxCenter[1])) * (180 / Math.PI);
+    function move(angle){
         if (angle <= 90 && angle >= -90) {
             box.css({"-webkit-transform": 'rotate(' + angle + 'deg)'});
             box.css({'-moz-transform': 'rotate(' + angle + 'deg)'});
             box.css({'transform': 'rotate(' + angle + 'deg)'});
         }
     }
-    
+
+    function handleMouse(e) {
+        var angle = Math.atan2(e.pageX - boxCenter[0], -(e.pageY - boxCenter[1])) * (180 / Math.PI);
+        move(angle);
+    }
+
+    //Manage touches
+    // function handleStart(e) {
+    //     console.log('start:', e);
+    // }
+    // function handleEnd(e) {
+    //     console.log('end:', e);
+    // }
+    // function handleCancel(e) {
+    //     console.log('cancel:', e);
+    // }
+    function handleMove(e) {
+        console.log('move:', e);
+        var angle = Math.atan2(e.changedTouches[0].pageX - boxCenter[0], -(e.changedTouches[0].pageY - boxCenter[1])) * (180 / Math.PI);
+        move(angle);
+    }
+
     // listen any touch event
-    document.addEventListener('mousemove', moveTheTorchByMouse, true);
+    document.addEventListener('mousemove', handleMouse, true);
+    document.addEventListener("touchstart", handleMove, true);
+    // document.addEventListener("touchend", handleEnd, false);
+    // document.addEventListener("touchcancel", handleCancel, false);
+    document.addEventListener("touchmove", handleMove, true);
+
+
 }
